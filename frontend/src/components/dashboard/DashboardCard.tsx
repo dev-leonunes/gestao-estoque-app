@@ -1,7 +1,5 @@
-// src/components/dashboard/DashboardCard.tsx
-
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 
 interface DashboardCardProps {
   title: string;

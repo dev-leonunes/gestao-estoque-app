@@ -1,7 +1,3 @@
-// src/components/dashboard/RecentProductItem.tsx
-
-import React from 'react';
-
 interface RecentProductItemProps {
   name: string;
   quantity: number;
