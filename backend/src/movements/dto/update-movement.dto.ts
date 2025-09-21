@@ -1,6 +1,12 @@
-import { PartialType, OmitType } from '@nestjs/mapped-types';
-import { CreateMovementDto } from './create-movement.dto';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
 
-export class UpdateMovementDto extends PartialType(
-  OmitType(CreateMovementDto, ['type', 'quantity', 'productId'] as const),
-) {}
+export class UpdateMovementDto {
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  reference?: string;
+}

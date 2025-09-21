@@ -9,6 +9,7 @@ import {
   Query,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { MovementsService } from './movements.service';
 import { CreateMovementDto } from './dto/create-movement.dto';
@@ -17,7 +18,7 @@ import { MovementType } from './entities/movement.entity';
 
 @Controller('movements')
 export class MovementsController {
-  constructor(private readonly movementsService: MovementsService) {}
+  constructor(private readonly movementsService: MovementsService) { }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -44,19 +45,34 @@ export class MovementsController {
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
   ) {
-    const start = startDate ? new Date(startDate) : undefined;
-    const end = endDate ? new Date(endDate) : undefined;
+    let start: Date | undefined;
+    let end: Date | undefined;
+
+    if (startDate) {
+      start = new Date(startDate);
+      if (isNaN(start.getTime())) {
+        start = undefined;
+      }
+    }
+
+    if (endDate) {
+      end = new Date(endDate);
+      if (isNaN(end.getTime())) {
+        end = undefined;
+      }
+    }
+
     return this.movementsService.getMovementsSummary(start, end);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.movementsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateMovementDto: UpdateMovementDto,
   ) {
     return this.movementsService.update(id, updateMovementDto);
@@ -64,7 +80,7 @@ export class MovementsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.movementsService.remove(id);
   }
 }

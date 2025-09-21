@@ -14,7 +14,7 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) {}
+  ) { }
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const product = this.productRepository.create(createProductDto);
@@ -44,7 +44,14 @@ export class ProductsService {
     updateProductDto: UpdateProductDto,
   ): Promise<Product> {
     const product = await this.findOne(id);
-    Object.assign(product, updateProductDto);
+
+    const fieldsToUpdate = Object.fromEntries(
+      Object.entries(updateProductDto).filter(
+        ([, value]) => value !== undefined,
+      ),
+    );
+
+    Object.assign(product, fieldsToUpdate);
     return await this.productRepository.save(product);
   }
 

@@ -18,7 +18,7 @@ export class MovementsService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     private readonly dataSource: DataSource,
-  ) {}
+  ) { }
 
   async create(createMovementDto: CreateMovementDto): Promise<Movement> {
     const queryRunner = this.dataSource.createQueryRunner();
@@ -100,7 +100,13 @@ export class MovementsService {
   ): Promise<Movement> {
     const movement = await this.findOne(id);
 
-    Object.assign(movement, updateMovementDto);
+    const fieldsToUpdate = Object.fromEntries(
+      Object.entries(updateMovementDto).filter(
+        ([, value]) => value !== undefined,
+      ),
+    );
+
+    Object.assign(movement, fieldsToUpdate);
     return await this.movementRepository.save(movement);
   }
 
