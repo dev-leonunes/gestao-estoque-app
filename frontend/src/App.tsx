@@ -5,6 +5,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { MovementsPage } from './pages/MovementsPage';
 
+
 export function App() {
   return (
     <BrowserRouter>
