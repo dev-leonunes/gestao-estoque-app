@@ -189,3 +189,11 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+/* src/App.css ou src/index.css */
+
+/* Estilo para garantir que o fundo do modal seja escurecido */
+.DialogOverlay {
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(2px);
+}
