@@ -14,7 +14,7 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) { }
+  ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const product = this.productRepository.create(createProductDto);

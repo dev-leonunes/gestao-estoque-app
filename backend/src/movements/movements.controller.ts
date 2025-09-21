@@ -18,7 +18,7 @@ import { MovementType } from './entities/movement.entity';
 
 @Controller('movements')
 export class MovementsController {
-  constructor(private readonly movementsService: MovementsService) { }
+  constructor(private readonly movementsService: MovementsService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

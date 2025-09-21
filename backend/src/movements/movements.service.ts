@@ -18,7 +18,7 @@ export class MovementsService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     private readonly dataSource: DataSource,
-  ) { }
+  ) {}
 
   async create(createMovementDto: CreateMovementDto): Promise<Movement> {
     const queryRunner = this.dataSource.createQueryRunner();
