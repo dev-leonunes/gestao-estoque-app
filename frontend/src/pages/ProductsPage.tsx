@@ -30,7 +30,7 @@ export function ProductsPage() {
           </DialogTrigger>
 
           {/* O DialogContent aqui está correto. */}
-          <DialogContent className="w-[425px] max-w-full">
+          <DialogContent className="w-[850px] max-w-full h-[650px]">
             <DialogHeader>
               <DialogTitle>Adicionar Novo Produto</DialogTitle>
               <DialogDescription>

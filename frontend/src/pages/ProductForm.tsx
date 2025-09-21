@@ -15,7 +15,7 @@ import {
 
 const ProductForm: React.FC = () => {
   return (
-    <form className="space-y-4">
+    <form className="space-y-6"> {/* Espaçamento entre as seções */}
       {/* Container de Grid para Nome e Categoria */}
       <div className="grid grid-cols-2 gap-4">
         {/* Nome do Produto */}
@@ -44,8 +44,16 @@ const ProductForm: React.FC = () => {
         </div>
       </div>
 
-      {/* Container de Grid para Estoque Atual e Mínimo */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Container de Grid para Preço, Estoque Atual e Estoque Mínimo */}
+      <div className="grid grid-cols-3 gap-4">
+        {/* Preço */}
+        <div className="space-y-2">
+          <Label htmlFor="product-price">
+            Preço (R$) <span className="text-red-500">*</span>
+          </Label>
+          <Input id="product-price" type="number" defaultValue="0" />
+        </div>
+
         {/* Estoque Atual */}
         <div className="space-y-2">
           <Label htmlFor="stock-atual">
@@ -73,7 +81,7 @@ const ProductForm: React.FC = () => {
       </div>
 
       {/* Botão de Adicionar Produto */}
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full mt-6">
         Adicionar Produto
       </Button>
     </form>

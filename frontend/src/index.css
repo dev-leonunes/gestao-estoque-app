@@ -195,5 +195,5 @@ button:focus-visible {
 /* Estilo para garantir que o fundo do modal seja escurecido */
 .DialogOverlay {
   background-color: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(5px);
 }
