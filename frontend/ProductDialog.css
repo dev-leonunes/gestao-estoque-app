@@ -1,0 +1,19 @@
+/* >>> ADICIONAR ESTE CÓDIGO NO FINAL DO SEU index.css <<< */
+
+/*
+  Esta regra de CSS é super específica e só vai ser aplicada
+  no conteúdo do dialog do shadcn/ui.
+  O `!important` é para garantir que ele vença os conflitos
+  com os outros estilos do seu arquivo.
+*/
+[data-radix-dialog-content] {
+  background-color: white !important;
+  color: black !important;
+  border-radius: 0.75rem !important; /* Cantos arredondados */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  padding: 24px !important;
+
+  /* Centralização e largura máxima para não ocupar a tela toda */
+  max-width: 650px !important;
+  width: 90% !important; /* Garante que não cole nas bordas em telas pequenas */
+}

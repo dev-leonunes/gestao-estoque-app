@@ -190,10 +190,37 @@ button:focus-visible {
   }
 }
 
-/* src/App.css ou src/index.css */
+/* >>> ADICIONE ESTE CÓDIGO NO FINAL DO SEU index.css <<< */
 
-/* Estilo para garantir que o fundo do modal seja escurecido */
-.DialogOverlay {
-  background-color: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(5px);
+/* Estilo para a caixa da lista de opções */
+[data-radix-select-content] {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  padding: 4px !important;
 }
+
+/* Estilo para cada item na lista */
+[data-radix-select-item] {
+  padding-left: 32px !important; /* Cria espaço para o ícone de check */
+  position: relative !important;
+  border-radius: 0.25rem !important;
+}
+
+/* Estilo para o item quando o rato passa por cima ou está selecionado */
+[data-radix-select-item][data-highlighted] {
+  background-color: #4f46e5 !important; /* Cor roxa/azul da referência */
+  color: white !important;
+}
+
+/* Estilo para o ícone de "check" */
+[data-radix-select-item-indicator] {
+  position: absolute !important;
+  left: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: inherit !important; /* Herda a cor (branca quando selecionado) */
+}
+

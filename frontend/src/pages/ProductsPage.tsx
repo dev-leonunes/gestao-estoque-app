@@ -1,7 +1,9 @@
-// src/pages/ProductsPage.tsx
+// Caminho: frontend/src/pages/ProductsPage.tsx
 
 import React, { useState } from 'react';
 import ProductForm from './ProductForm';
+import { PlusCircle } from 'lucide-react';
+import { Button } from '../components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -18,22 +20,37 @@ export function ProductsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Produtos</h2>
-          <p className="text-muted-foreground">Gerencie seu inventário de produtos.</p>
+          <h2 className="text-2xl font-bold text-white">Produtos</h2>
+          <p className="text-gray-400">Gerencie seu inventário de produtos.</p>
         </div>
 
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
-            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-3">
-              + Adicionar Produto
-            </button>
+            <Button onClick={() => setIsModalOpen(true)}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Adicionar Produto
+            </Button>
           </DialogTrigger>
 
-          {/* O DialogContent aqui está correto. */}
-          <DialogContent className="w-[850px] max-w-full h-[650px]">
+          <DialogContent
+            style={{
+              backgroundColor: 'white',
+              color: 'black',
+              borderRadius: '0.75rem',
+              maxWidth: '650px',
+              width: '90%',
+              boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+              
+              // --- AJUSTES DE ESTILO AQUI ---
+              padding: '28px', // Aumenta o espaçamento interno geral
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px', // Aumenta o espaço entre o cabeçalho e o formulário
+            }}
+          >
             <DialogHeader>
-              <DialogTitle>Adicionar Novo Produto</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-xl font-bold">Adicionar Novo Produto</DialogTitle>
+              <DialogDescription className="text-gray-500">
                 Preencha as informações do produto abaixo.
               </DialogDescription>
             </DialogHeader>
@@ -42,18 +59,16 @@ export function ProductsPage() {
         </Dialog>
       </div>
 
-      {/* Condição para aplicar o efeito quando o modal estiver aberto */}
+      {/* Sua solução para o fundo escuro (mantida) */}
       {isModalOpen && (
         <div
           style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Cor de fundo escura com transparência
-            zIndex: 9998, // Z-index abaixo do modal, mas acima dos outros elementos da página
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            zIndex: 40,
           }}
+          onClick={() => setIsModalOpen(false)}
         />
       )}
     </div>
