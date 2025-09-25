@@ -1,5 +1,3 @@
-// Caminho: frontend/src/pages/ProductsPage.tsx
-
 import React, { useState } from 'react';
 import ProductForm from './ProductForm';
 import { PlusCircle } from 'lucide-react';

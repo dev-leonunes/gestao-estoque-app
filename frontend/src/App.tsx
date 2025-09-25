@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Header } from './components/layout/Header';
+import { Header } from './components/dashboard/Header';
 import { PageWrapper } from './components/layout/PageWrapper';
 import { DashboardPage } from './pages/DashboardPage';
 import { ProductsPage } from './pages/ProductsPage';
