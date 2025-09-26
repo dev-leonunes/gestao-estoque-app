@@ -6,13 +6,14 @@ import { PageWrapper } from './components/layout/PageWrapper';
 import { DashboardPage } from './pages/DashboardPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { MovementsPage } from './pages/MovementsPage';
+import { Toaster } from './components/ui/sonner';
 
 
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-slate-50">
           <Header />
           <PageWrapper>
             <Routes>
@@ -22,9 +23,8 @@ export function App() {
             </Routes>
           </PageWrapper>
         </div>
+        <Toaster />
       </BrowserRouter>
-      {/* TODO: Instalar @tanstack/react-query-devtools para desenvolvimento */}
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

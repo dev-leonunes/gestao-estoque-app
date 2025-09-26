@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Label } from '../components/ui/label';
-import { Input } from '../components/ui/input';
+import { useEffect, useState } from 'react';
 import { Button } from '../components/ui/button';
-import { Textarea } from '../components/ui/textarea';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
 import {
   Select,
   SelectContent,
@@ -10,98 +9,124 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import { Textarea } from '../components/ui/textarea';
+import { useCreateProduct, useUpdateProduct } from '../hooks/useProducts';
+import type { Product } from '../types/api';
+import { toast } from 'sonner';
 
-const ProductForm: React.FC = () => {
-  const [productName, setProductName] = useState('');
-  const [category, setCategory] = useState('');
-  const [stock, setStock] = useState(0);
-  const [minStock, setMinStock] = useState(0);
-  const [description, setDescription] = useState('');
+interface ProductFormProps {
+  onSuccess: () => void;
+  product?: Product;
+}
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // TODO: Implementar integração com API para criar produto
-    const newProduct = { name: productName, category, stock, minStock, description };
-    
-    // Aqui virá a chamada para a API
-    // await createProduct(newProduct);
-    
-    console.log('Produto a ser criado:', newProduct);
+export default function ProductForm({ onSuccess, product }: ProductFormProps) {
+  const [name, setName] = useState(product?.name || '');
+  const [category, setCategory] = useState(product?.category || '');
+  const [stockQuantity, setStockQuantity] = useState(product?.stockQuantity || 0);
+  const [minimumStock, setMinimumStock] = useState(product?.minimumStock || 0);
+  const [description, setDescription] = useState(product?.description || '');
+
+  useEffect(() => {
+    if (product) {
+      setName(product.name || '');
+      setCategory(product.category || '');
+      setStockQuantity(product.stockQuantity || 0);
+      setMinimumStock(product.minimumStock || 0);
+      setDescription(product.description || '');
+    }
+  }, [product]);
+
+  const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      name,
+      category: category || undefined,
+      stockQuantity,
+      minimumStock,
+      description: description || undefined,
+      isActive: true,
+    };
+
+    try {
+      if (product?.id) {
+        await updateProduct.mutateAsync({ id: product.id, data: payload as any });
+        toast.success('Produto atualizado com sucesso!');
+      } else {
+        await createProduct.mutateAsync(payload as any);
+        toast.success('Produto criado com sucesso!');
+      }
+      onSuccess();
+    } catch (err) {
+      console.error('Erro ao salvar produto', err);
+      toast.error(product?.id ? 'Erro ao atualizar produto' : 'Erro ao criar produto');
+    }
   };
 
   return (
-    <form className="grid gap-6 py-4 text-left" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-2 gap-3">
+    <form onSubmit={handleSubmit} className="modal-form grid gap-6">
+      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-black font-medium">Nome do Produto <span className="text-red-500">*</span></Label>
-          <Input
-            className="h-12 text-black"
-            placeholder="Digite o nome do produto"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            required
-          />
+          <Label htmlFor="name">Nome do Produto *</Label>
+          <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
         <div className="space-y-2">
-          <Label className="text-black font-medium">Categoria <span className="text-red-500">*</span></Label>
+          <Label htmlFor="category">Categoria *</Label>
           <Select onValueChange={setCategory} value={category}>
-            <SelectTrigger className="h-12 text-black">
-              <SelectValue placeholder="Selecione uma categoria" />
+            <SelectTrigger id="category">
+              <SelectValue placeholder="Selecione" />
             </SelectTrigger>
-            <SelectContent className="bg-white text-black border border-slate-200 rounded-lg shadow-md p-1.5 z-50">
-              {/* TODO: Carregar categorias da API */}
-              <SelectItem value="" disabled className="text-sm px-2.5 py-2.5 pl-8 relative rounded cursor-pointer">
-                Carregando categorias...
-              </SelectItem>
+            <SelectContent>
+              <SelectItem value="Tecidos e Malhas">Tecidos e Malhas</SelectItem>
+              <SelectItem value="Aviamentos">Aviamentos</SelectItem>
+              <SelectItem value="Linhas e Fios">Linhas e Fios</SelectItem>
+              <SelectItem value="Agulhas e Alfinetes">Agulhas e Alfinetes</SelectItem>
+              <SelectItem value="Ferramentas e Acessórios">Ferramentas e Acessórios</SelectItem>
+              <SelectItem value="Modelagem e Marcação">Modelagem e Marcação</SelectItem>
+              <SelectItem value="Máquinas e Peças">Máquinas e Peças</SelectItem>
+              <SelectItem value="Estrutura e Enchimento">Estrutura e Enchimento</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-black font-medium">Estoque Atual <span className="text-red-500">*</span></Label>
-          <Input
-            className="h-12 text-black"
-            type="number"
-            placeholder="0"
-            value={stock}
-            onChange={(e) => setStock(Number(e.target.value))}
-            required
-          />
+          <Label htmlFor="stockQuantity">Estoque Atual *</Label>
+          <Input id="stockQuantity" type="number" value={stockQuantity} onChange={(e) => setStockQuantity(Number(e.target.value))} required />
         </div>
         <div className="space-y-2">
-          <Label className="text-black font-medium">
-            Estoque Mínimo <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            className="h-12 text-black"
-            type="number"
-            placeholder="0"
-            value={minStock}
-            onChange={(e) => setMinStock(Number(e.target.value))}
-            required
-          />
+          <Label htmlFor="minimumStock">Estoque Mínimo *</Label>
+          <Input id="minimumStock" type="number" value={minimumStock} onChange={(e) => setMinimumStock(Number(e.target.value))} required />
         </div>
       </div>
       <div className="space-y-2">
-        <Label className="text-black font-medium">
-          Descrição
-        </Label>
-        <Textarea
-          className="text-black min-h-[100px]"
-          placeholder="Descrição do produto (opcional)"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        <Label htmlFor="description">Descrição</Label>
+        <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
       </div>
-      <Button
-        type="submit"
-        className="w-full h-12 text-white bg-black hover:bg-gray-800 text-base font-semibold"
-      >
-        Adicionar Produto
-      </Button>
+      <div className="flex justify-end gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onSuccess}
+          className="!bg-white hover:bg-red-600 !text-red-600 hover:text-white !border-black hover:border-red-600 transition-colors"
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          disabled={createProduct.isPending || updateProduct.isPending}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          {createProduct.isPending || updateProduct.isPending
+            ? 'Salvando...'
+            : product?.id
+              ? 'Atualizar Produto'
+              : 'Salvar Produto'
+          }
+        </Button>
+      </div>
     </form>
   );
-};
-
-export default ProductForm;
+}

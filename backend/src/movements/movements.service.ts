@@ -3,7 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository, InjectDataSource } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Movement, MovementType } from './entities/movement.entity';
 import { Product } from '../products/entities/product.entity';
@@ -17,8 +17,8 @@ export class MovementsService {
     private readonly movementRepository: Repository<Movement>,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-    private readonly dataSource: DataSource,
-  ) {}
+    @InjectDataSource() private readonly dataSource: DataSource,
+  ) { }
 
   async create(createMovementDto: CreateMovementDto): Promise<Movement> {
     const queryRunner = this.dataSource.createQueryRunner();

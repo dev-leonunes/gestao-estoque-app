@@ -11,13 +11,19 @@ import type {
   DashboardOverview,
   ProductFilters,
   MovementFilters,
-  MovementType,
 } from '../types/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const RAW_BASE_URL: string = (import.meta.env.VITE_API_URL as string) || 'http://localhost:3000';
+const NORMALIZED_BASE_URL = (() => {
+  const trimmed = RAW_BASE_URL.replace(/\/$/, '');
+  if (trimmed.endsWith('/api')) {
+    return trimmed;
+  }
+  return `${trimmed}/api`;
+})();
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: NORMALIZED_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -33,15 +39,8 @@ api.interceptors.response.use(
 );
 
 export const productsApi = {
-  getAll: async (filters?: ProductFilters): Promise<Product[]> => {
-    const params = new URLSearchParams();
-    if (filters?.category) {
-      params.append('category', filters.category);
-    }
-
-    const response: AxiosResponse<Product[]> = await api.get('/products', {
-      params: Object.fromEntries(params),
-    });
+  getAll: async (_filters?: ProductFilters): Promise<Product[]> => {
+    const response: AxiosResponse<Product[]> = await api.get('/products');
     return response.data;
   },
 
@@ -71,18 +70,8 @@ export const productsApi = {
 };
 
 export const movementsApi = {
-  getAll: async (filters?: MovementFilters): Promise<Movement[]> => {
-    const params = new URLSearchParams();
-    if (filters?.type) {
-      params.append('type', filters.type);
-    }
-    if (filters?.productId) {
-      params.append('productId', filters.productId);
-    }
-
-    const response: AxiosResponse<Movement[]> = await api.get('/movements', {
-      params: Object.fromEntries(params),
-    });
+  getAll: async (_filters?: MovementFilters): Promise<Movement[]> => {
+    const response: AxiosResponse<Movement[]> = await api.get('/movements');
     return response.data;
   },
 
@@ -91,35 +80,8 @@ export const movementsApi = {
     return response.data;
   },
 
-  getByProduct: async (productId: string): Promise<Movement[]> => {
-    const response: AxiosResponse<Movement[]> = await api.get('/movements', {
-      params: { productId },
-    });
-    return response.data;
-  },
-
-  getByType: async (type: MovementType): Promise<Movement[]> => {
-    const response: AxiosResponse<Movement[]> = await api.get('/movements', {
-      params: { type },
-    });
-    return response.data;
-  },
-
-  getSummary: async (filters?: {
-    startDate?: string;
-    endDate?: string;
-  }): Promise<MovementsSummary> => {
-    const params = new URLSearchParams();
-    if (filters?.startDate) {
-      params.append('startDate', filters.startDate);
-    }
-    if (filters?.endDate) {
-      params.append('endDate', filters.endDate);
-    }
-
-    const response: AxiosResponse<MovementsSummary> = await api.get('/movements/summary', {
-      params: Object.fromEntries(params),
-    });
+  getSummary: async (): Promise<MovementsSummary> => {
+    const response: AxiosResponse<MovementsSummary> = await api.get('/movements/summary');
     return response.data;
   },
 
@@ -156,24 +118,21 @@ export const dashboardApi = {
   },
 };
 
-
 export const healthApi = {
-  check: async (): Promise<{ status: string; timestamp: Date }> => {
+  check: async (): Promise<{ status: 'healthy' | 'unhealthy'; timestamp: string }> => {
     try {
-      await api.get('/products', { params: { limit: 1 } });
+      await api.get('/health');
       return {
         status: 'healthy',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
       };
     } catch (error) {
       return {
         status: 'unhealthy',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
       };
     }
   },
 };
 
 export { api };
-
-export type ApiClient = typeof api;
