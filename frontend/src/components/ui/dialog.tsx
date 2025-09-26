@@ -1,19 +1,16 @@
-// Caminho: src/components/ui/dialog.tsx
-
 "use client"
 
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 
-import { cn } from "frontend/src/lib/utils.ts" // Verifique se este caminho está correto para o seu projeto
+import { cn } from "frontend/src/lib/utils.ts"
 
 const Dialog = DialogPrimitive.Root
 const DialogTrigger = DialogPrimitive.Trigger
 const DialogPortal = DialogPrimitive.Portal
 const DialogClose = DialogPrimitive.Close
 
-// Este componente cria o fundo preto
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
@@ -29,21 +26,16 @@ const DialogOverlay = React.forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
-// Este componente é a janela (modal)
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlay /> {/* A chamada do overlay está aqui */}
+    <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        // --- CLASSES MAIS IMPORTANTES ---
         "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-white p-6 shadow-lg sm:rounded-lg",
-        // Adicione a classe de largura que você deseja aqui
-        // Por exemplo, a que usamos na ProductsPage.tsx: "sm:max-w-[650px]"
-        // A classe `max-w-lg` já define uma largura máxima padrão.
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
         className
       )}
@@ -58,8 +50,6 @@ const DialogContent = React.forwardRef<
   </DialogPortal>
 ))
 DialogContent.displayName = DialogPrimitive.Content.displayName
-
-// O restante do arquivo (DialogHeader, DialogTitle, etc.) permanece o mesmo...
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)} {...props} />
