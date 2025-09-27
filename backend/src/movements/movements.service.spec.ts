@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { getRepositoryToken, getDataSourceToken } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 import { MovementsService } from './movements.service';
@@ -17,18 +17,20 @@ describe('MovementsService', () => {
     findOne: jest.fn(),
     save: jest.fn(),
     createQueryBuilder: jest.fn(),
+    remove: jest.fn(),
   };
 
   const mockProductRepository = {
     findOne: jest.fn(),
+    save: jest.fn(),
   };
 
   const mockQueryRunner = {
-    connect: jest.fn(),
-    startTransaction: jest.fn(),
-    commitTransaction: jest.fn(),
-    rollbackTransaction: jest.fn(),
-    release: jest.fn(),
+    connect: jest.fn().mockResolvedValue(undefined),
+    startTransaction: jest.fn().mockResolvedValue(undefined),
+    commitTransaction: jest.fn().mockResolvedValue(undefined),
+    rollbackTransaction: jest.fn().mockResolvedValue(undefined),
+    release: jest.fn().mockResolvedValue(undefined),
     manager: {
       findOne: jest.fn(),
       create: jest.fn(),
@@ -78,7 +80,7 @@ describe('MovementsService', () => {
           useValue: mockProductRepository,
         },
         {
-          provide: DataSource,
+          provide: getDataSourceToken(),
           useValue: mockDataSource,
         },
       ],

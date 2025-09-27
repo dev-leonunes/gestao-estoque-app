@@ -18,7 +18,7 @@ export class MovementsService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     @InjectDataSource() private readonly dataSource: DataSource,
-  ) { }
+  ) {}
 
   async create(createMovementDto: CreateMovementDto): Promise<Movement> {
     const queryRunner = this.dataSource.createQueryRunner();
@@ -26,7 +26,6 @@ export class MovementsService {
     await queryRunner.startTransaction();
 
     try {
-      // Verificar se o produto existe
       const product = await queryRunner.manager.findOne(Product, {
         where: { id: createMovementDto.productId },
       });
@@ -35,13 +34,11 @@ export class MovementsService {
         throw new NotFoundException('Produto não encontrado');
       }
 
-      // Calcular a quantidade que será adicionada ou removida do estoque
       const stockChange =
         createMovementDto.type === MovementType.IN
           ? createMovementDto.quantity
           : -createMovementDto.quantity;
 
-      // Verificar se há estoque suficiente para saídas
       if (
         createMovementDto.type === MovementType.OUT &&
         product.stockQuantity < createMovementDto.quantity
@@ -51,17 +48,14 @@ export class MovementsService {
         );
       }
 
-      // Criar a movimentação
       const movement = queryRunner.manager.create(Movement, createMovementDto);
       await queryRunner.manager.save(movement);
 
-      // Atualizar o estoque do produto
       product.stockQuantity += stockChange;
       await queryRunner.manager.save(product);
 
       await queryRunner.commitTransaction();
 
-      // Buscar a movimentação criada com as relações
       return await this.movementRepository.findOne({
         where: { id: movement.id },
         relations: ['product'],
@@ -125,24 +119,20 @@ export class MovementsService {
         throw new NotFoundException('Movimentação não encontrada');
       }
 
-      // Reverter o movimento no estoque
       const stockChange =
         movement.type === MovementType.IN
           ? -movement.quantity
           : movement.quantity;
 
-      // Verificar se a reversão não deixará o estoque negativo
       if (movement.product.stockQuantity + stockChange < 0) {
         throw new BadRequestException(
           'Não é possível excluir esta movimentação pois deixaria o estoque negativo',
         );
       }
 
-      // Atualizar o estoque
       movement.product.stockQuantity += stockChange;
       await queryRunner.manager.save(movement.product);
 
-      // Remover a movimentação
       await queryRunner.manager.remove(movement);
 
       await queryRunner.commitTransaction();

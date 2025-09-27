@@ -21,8 +21,8 @@ async function bootstrap() {
     }),
   );
 
-  // Configurar prefixo global da API
   app.setGlobalPrefix('api');
+  app.enableCors();
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
