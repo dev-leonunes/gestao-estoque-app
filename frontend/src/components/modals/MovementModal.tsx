@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from '../ui/select';
 import { Textarea } from '../ui/textarea';
+import { ProductCombobox } from '../ui/product-combobox';
 import { useState } from 'react';
 import { useProducts } from '../../hooks/useProducts';
 import { useCreateMovement } from '../../hooks/useMovements';
@@ -41,6 +42,7 @@ export function MovementModal({ isOpen, onClose }: MovementModalProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.productId || !formData.quantity || !formData.reason) {
+            toast.error('Preencha todos os campos obrigatórios');
             return;
         }
 
@@ -69,32 +71,22 @@ export function MovementModal({ isOpen, onClose }: MovementModalProps) {
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black rounded-lg max-w-[650px] w-[90%] shadow-lg p-0 border-0" showCloseButton={false}>
+            <DialogContent className="max-w-[650px] w-[90%] p-0">
                 <DialogHeader className="p-6 pb-0">
-                    <DialogTitle className="text-xl font-bold text-gray-900">Nova Movimentação</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">Nova Movimentação</DialogTitle>
                 </DialogHeader>
                 <div className="px-6 pb-6">
-                    <form onSubmit={handleSubmit} className="modal-form grid gap-6">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
+                    <form onSubmit={handleSubmit} className="grid gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2 sm:col-span-2">
                                 <Label htmlFor="productId">Produto *</Label>
-                                <Select
+                                <ProductCombobox
+                                    products={products || []}
                                     value={formData.productId}
-                                    onValueChange={(value: string) =>
-                                        setFormData({ ...formData, productId: value })
-                                    }
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Selecione um produto" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {products?.map((product) => (
-                                            <SelectItem key={product.id} value={product.id}>
-                                                {product.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                                    onValueChange={(value) => setFormData({ ...formData, productId: value })}
+                                    placeholder="Selecione um produto"
+                                    emptyText="Nenhum produto encontrado"
+                                />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="type">Tipo de Movimentação *</Label>
@@ -135,20 +127,20 @@ export function MovementModal({ isOpen, onClose }: MovementModalProps) {
                                 placeholder="Descreva o motivo da movimentação"
                                 rows={3}
                                 required
+                                className="resize-none"
                             />
                         </div>
                         <div className="flex justify-end gap-2">
                             <Button
                                 type="button"
-                                variant="outline"
+                                variant="destructive"
                                 onClick={onClose}
-                                className="!bg-white hover:bg-red-600 !text-red-600 hover:text-white !border-black hover:border-red-600 transition-colors"
                             >
                                 Cancelar
                             </Button>
                             <Button
                                 type="submit"
-                                className="text-white"
+                                disabled={!formData.productId || !formData.quantity || !formData.reason}
                             >
                                 Criar Movimentação
                             </Button>

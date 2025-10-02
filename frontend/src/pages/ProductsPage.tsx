@@ -72,13 +72,16 @@ export function ProductsPage() {
   return (
     <div className="space-y-6">
       {/* Cabeçalho da Página */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Produtos</h1>
+          <h2 className="text-2xl font-bold text-gray-900">Produtos</h2>
           <p className="text-gray-600">Gerencie seu inventário de produtos</p>
         </div>
 
-        <Button onClick={() => setIsModalOpen(true)}>
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          className="w-full sm:w-auto"
+        >
           <PlusCircle className="mr-2 h-4 w-4" />
           Adicionar Produto
         </Button>
@@ -120,7 +123,7 @@ export function ProductsPage() {
       </div>
 
       {/* Tabela de Produtos */}
-      <div className="rounded-lg border border-gray-200 bg-white">
+      <div className="rounded-lg border border-gray-100 bg-white">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Lista de Produtos</h3>
@@ -192,15 +195,13 @@ export function ProductsPage() {
                             variant="outline"
                             size="sm"
                             onClick={() => handleEdit(product)}
-                            className="action-button-edit"
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button
-                            variant="outline"
+                            variant="destructive"
                             size="sm"
                             onClick={() => setProductToDelete(product.id)}
-                            className="action-button-delete"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

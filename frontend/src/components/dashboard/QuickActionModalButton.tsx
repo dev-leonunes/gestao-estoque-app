@@ -11,11 +11,11 @@ export function QuickActionModalButton({ label, icon, onClick }: QuickActionModa
     return (
         <Button
             variant="outline"
-            className="quick-action-button w-full justify-start gap-2 bg-white hover:bg-gray-50 text-gray-900 border-gray-200 hover:border-gray-300 transition-colors"
+            className="w-full justify-start gap-2 cursor-pointer"
             onClick={onClick}
         >
             {icon}
-            <span className="text-gray-900">{label}</span>
+            <span>{label}</span>
         </Button>
     );
 }

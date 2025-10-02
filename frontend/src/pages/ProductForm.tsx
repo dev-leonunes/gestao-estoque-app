@@ -66,7 +66,7 @@ export default function ProductForm({ onSuccess, product }: ProductFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="modal-form grid gap-6">
+    <form onSubmit={handleSubmit} className="grid gap-6">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="name">Nome do Produto *</Label>
@@ -108,16 +108,14 @@ export default function ProductForm({ onSuccess, product }: ProductFormProps) {
       <div className="flex justify-end gap-2">
         <Button
           type="button"
-          variant="outline"
+          variant="destructive"
           onClick={onSuccess}
-          className="!bg-white hover:bg-red-600 !text-red-600 hover:text-white !border-black hover:border-red-600 transition-colors"
         >
           Cancelar
         </Button>
         <Button
           type="submit"
           disabled={createProduct.isPending || updateProduct.isPending}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
         >
           {createProduct.isPending || updateProduct.isPending
             ? 'Salvando...'

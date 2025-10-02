@@ -17,9 +17,9 @@ interface ProductModalProps {
 export function ProductModal({ isOpen, onClose, title = "Adicionar Novo Produto", product }: ProductModalProps) {
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="!bg-white !text-black rounded-lg max-w-[650px] w-[90%] shadow-lg p-0 border-0">
+            <DialogContent className="max-w-[650px] w-[90%] p-0">
                 <DialogHeader className="p-6 pb-0">
-                    <DialogTitle className="text-xl font-bold !text-gray-900">{title}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold">{title}</DialogTitle>
                 </DialogHeader>
                 <div className="px-6 pb-6">
                     <ProductForm onSuccess={onClose} product={product} />

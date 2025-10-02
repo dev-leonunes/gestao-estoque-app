@@ -30,13 +30,13 @@ export function ConfirmationModal({
 }: ConfirmationModalProps) {
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="bg-white text-black rounded-lg max-w-[450px] w-[90%] shadow-lg p-0 border-0">
+            <DialogContent className="max-w-[450px] w-[90%] p-0">
                 <DialogHeader className="p-6 pb-4">
                     <div className="flex items-center gap-3">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
                             <AlertTriangle className="h-5 w-5 text-red-600" />
                         </div>
-                        <DialogTitle className="text-lg font-semibold text-gray-900">{title}</DialogTitle>
+                        <DialogTitle className="text-lg font-semibold">{title}</DialogTitle>
                     </div>
                 </DialogHeader>
                 <div className="px-6 pb-6">
@@ -49,7 +49,7 @@ export function ConfirmationModal({
                             variant="outline"
                             onClick={onClose}
                             disabled={isLoading}
-                            className="!bg-white !hover:bg-gray-50 !text-black transition-colors"
+                            className="transition-colors"
                         >
                             {cancelText}
                         </Button>

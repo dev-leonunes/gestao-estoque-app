@@ -47,28 +47,33 @@ export function MovementsPage() {
 
   const getMovementBadge = (type: MovementType) => {
     return type === 'IN' ? (
-      <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-100">
+      <Badge variant="secondary">
         Entrada
       </Badge>
     ) : (
-      <Badge variant="destructive" className="bg-red-100 text-red-800 hover:bg-red-100">
+      <Badge variant="destructive">
         Saída
       </Badge>
     );
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Movimentações</h2>
+          <h2 className="text-2xl font-bold text-foreground">
+            Movimentações
+          </h2>
           <p className="text-muted-foreground">
             Gerencie as movimentações de entrada e saída do estoque.
           </p>
         </div>
 
-        <Button onClick={() => setDialogOpen(true)} className="flex items-center gap-2">
+        <Button
+          onClick={() => setDialogOpen(true)}
+          className="w-full sm:w-auto flex items-center gap-2"
+        >
           <PlusCircle className="h-4 w-4" />
           Nova Movimentação
         </Button>
@@ -90,7 +95,7 @@ export function MovementsPage() {
                   placeholder="Buscar por produto..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 bg-gray-300/50 border-0"
                 />
               </div>
             </div>

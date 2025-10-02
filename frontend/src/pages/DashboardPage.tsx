@@ -12,6 +12,7 @@ import { QuickActionButton } from '../components/dashboard/QuickActionButton';
 import { QuickActionModalButton } from '../components/dashboard/QuickActionModalButton';
 import { RecentProductItem } from '../components/dashboard/RecentProductItem';
 import { ProductModal } from '../components/modals/ProductModal';
+import { DashboardCard } from '@/components/dashboard/DashboardCard';
 
 export function DashboardPage() {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -37,61 +38,38 @@ export function DashboardPage() {
   return (
     <div className="space-y-8">
       <section>
-        <h2 className="text-2xl font-semibold tracking-tight mb-4">
+        <h2 className="text-2xl font-bold text-foreground tracking-tight mb-4">
           Visão Geral
         </h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <div className="flex items-center">
-              <Package className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="text-sm font-medium text-gray-600">Total de Produtos</h3>
-            </div>
-            <div className="mt-2">
-              <p className="text-2xl font-bold">
-                {dashboardLoading ? "..." : totalProducts}
-              </p>
-              <p className="text-sm text-gray-500">Itens em estoque</p>
-            </div>
-          </div>
+          <DashboardCard
+            title="Total de Produtos"
+            value={dashboardLoading ? "..." : totalProducts.toString()}
+            icon={<Package className="h-4 w-4 text-gray-600" />}
+            description="Itens em estoque"
+          />
 
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <div className="flex items-center">
-              <Package className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="text-sm font-medium text-gray-600">Total Entradas</h3>
-            </div>
-            <div className="mt-2">
-              <p className="text-2xl font-bold">
-                {dashboardLoading ? "..." : totalQuantityIn}
-              </p>
-              <p className="text-sm text-gray-500">Unidades</p>
-            </div>
-          </div>
+          <DashboardCard
+            title="Total Entradas"
+            value={dashboardLoading ? "..." : totalQuantityIn.toString()}
+            icon={<Package className="h-4 w-4 text-gray-600" />}
+            description="Unidades"
+          />
 
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <div className="flex items-center">
-              <PackageX className="h-4 w-4 text-red-600 mr-2" />
-              <h3 className="text-sm font-medium text-gray-600">Produtos em Baixa</h3>
-            </div>
-            <div className="mt-2">
-              <p className="text-2xl font-bold">
-                {productsLoading ? "..." : lowStockCount}
-              </p>
-              <p className="text-sm text-gray-500">Requer atenção</p>
-            </div>
-          </div>
+          <DashboardCard
+            title="Produtos em Baixa"
+            value={productsLoading ? "..." : lowStockCount.toString()}
+            icon={<PackageX className="h-4 w-4 text-red-600" />}
+            description="Requer atenção"
+          />
 
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <div className="flex items-center">
-              <TrendingUp className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="text-sm font-medium text-gray-600">Movimentações Hoje</h3>
-            </div>
-            <div className="mt-2">
-              <p className="text-2xl font-bold">
-                {dashboardLoading ? "..." : todayMovements}
-              </p>
-              <p className="text-sm text-gray-500">Entradas e saídas</p>
-            </div>
-          </div>
+          <DashboardCard
+            title="Movimentações Hoje"
+            value={dashboardLoading ? "..." : todayMovements.toString()}
+            icon={<TrendingUp className="h-4 w-4 text-gray-600" />}
+            description="Entradas e saídas"
+          />
         </div>
       </section>
 
@@ -102,7 +80,7 @@ export function DashboardPage() {
             <h2 className="text-lg font-semibold">Produtos Recentes</h2>
           </div>
           <p className="text-gray-500 text-sm mb-4">Últimos produtos adicionados ao seu estoque</p>
-          <div className="rounded-lg border border-gray-200 bg-white">
+          <div className="rounded-lg border border-gray-100 bg-white">
             {productsLoading ? (
               <div className="p-4 text-center text-gray-500">
                 <Package className="h-8 w-8 mx-auto mb-2" />
@@ -153,12 +131,12 @@ export function DashboardPage() {
             />
           </div>
 
-          <ProductModal 
-            isOpen={isProductModalOpen} 
+          <ProductModal
+            isOpen={isProductModalOpen}
             onClose={() => setIsProductModalOpen(false)}
           />
         </section>
       </div>
-    </div>
+    </div >
   );
 }
