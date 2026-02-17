@@ -17,6 +17,16 @@ import { HealthModule } from './health/health.module';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         url: configService.get('DATABASE_URL'),
+        ssl:
+          configService.get('NODE_ENV') === 'production'
+            ? { rejectUnauthorized: false }
+            : undefined,
+        extra:
+          configService.get('NODE_ENV') === 'production'
+            ? { ssl: { rejectUnauthorized: false } }
+            : undefined,
+        retryAttempts: 5,
+        retryDelay: 3000,
         autoLoadEntities: true,
         synchronize: configService.get('NODE_ENV') === 'development',
         logging: configService.get('NODE_ENV') === 'development',

@@ -21,7 +21,10 @@ export async function createApp() {
         return callback(null, true);
       }
 
-      if (process.env.NODE_ENV === 'development' && origin.startsWith('http://localhost:')) {
+      if (
+        process.env.NODE_ENV === 'development' &&
+        origin.startsWith('http://localhost:')
+      ) {
         return callback(null, true);
       }
 
@@ -30,7 +33,8 @@ export async function createApp() {
       }
 
       console.log(`CORS blocked origin: ${origin}`);
-      const msg = 'A política de CORS para este site não permite acesso da Origem especificada.';
+      const msg =
+        'A política de CORS para este site não permite acesso da Origem especificada.';
       return callback(new Error(msg), false);
     },
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
@@ -62,4 +66,3 @@ export async function createApp() {
 
   return app;
 }
-
