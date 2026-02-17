@@ -1,0 +1,15 @@
+name: keepalive
+
+on:
+  schedule:
+    - cron: "0 9 */5 * *" # every 5 days at 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend DB health endpoint
+        run: curl -fsS "$KEEPALIVE_URL" > /dev/null
+        env:
+          KEEPALIVE_URL: ${{ secrets.KEEPALIVE_URL }}
