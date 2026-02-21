@@ -77,3 +77,22 @@ A API ficará disponível em `http://localhost:3000/api`.
    ```
 
 A aplicação web ficará disponível, por padrão, em `http://localhost:5173`.
+
+## Variáveis de ambiente e secret (deploy)
+
+### Backend (`backend/.env`)
+
+- Use `backend/.env.example` como base.
+- Variável essencial para produção: `DATABASE_URL`.
+- Outras variáveis definidas no exemplo também devem ser preenchidas conforme o ambiente.
+
+### Frontend (`frontend/.env`)
+
+- Defina `VITE_API_URL` com a URL pública da API backend.
+- Exemplo de produção: `VITE_API_URL=https://seu-backend/api`.
+
+### GitHub Actions (workflow keepalive)
+
+- O workflow `.github/workflows/keepalive.yml` usa o secret `KEEPALIVE_URL`.
+- Esse secret deve ser criado em: **GitHub Repository Settings > Secrets and variables > Actions**.
+- Valor recomendado: `https://seu-backend/api/health/db`.
